@@ -1,3 +1,6 @@
+dist/
+node_modules/
+
 /sabre/cli/src/protos/
 /sabre/cli/target/
 /sabre/tp/src/protos/

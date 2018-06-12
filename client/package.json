@@ -1,0 +1,40 @@
+{
+  "name": "pirate_talk_client",
+  "version": "0.0.0",
+  "description": "YARRRR A WEB APP TO HELP YOU TALK LIKE A PIRATE!!!!",
+  "main": "",
+  "scripts": {
+    "watch": "webpack-dev-server --env development --hot",
+    "build": "webpack --env production",
+    "test": "standard src/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/delventhalz/pirate-talk.git"
+  },
+  "author": "Zac Delventhal",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/delventhalz/pirate-talk/issues"
+  },
+  "homepage": "https://github.com/delventhalz/pirate-talk#readme",
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "jquery": "^3.3.1",
+    "mithril": "^1.1.6",
+    "popper.js": "^1.14.3",
+    "sawtooth-sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^8.6.2",
+    "css-loader": "^0.28.11",
+    "node-sass": "^4.9.0",
+    "postcss-loader": "^2.1.5",
+    "precss": "^3.1.2",
+    "sass-loader": "^7.0.3",
+    "standard": "^11.0.1",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.12.0",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
