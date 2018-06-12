@@ -24,24 +24,22 @@ const getPublicKey = privateKey => {
   return secp256k1.publicKeyCreate(toBytes(privateKey)).toString('hex')
 }
 
+// Create a private/public key pair together in an object
+const createKeys = () => {
+  const privateKey = createPrivateKey()
+  const publicKey = getPublicKey(privateKey)
+  return { privateKey, publicKey }
+}
+
 // Create a hex signature from a private key and message
 const sign = (privateKey, message) => {
   const { signature } = secp256k1.sign(sha256(message), toBytes(privateKey))
   return signature.toString('hex')
 }
 
-// Verify a hex signature, given a public key and message
-const verify = (publicKey, message, signature) => {
-  return secp256k1.verify(
-    sha256(message),
-    toBytes(signature),
-    toBytes(publicKey)
-  )
-}
-
 module.exports = {
   createPrivateKey,
   getPublicKey,
-  sign,
-  verify
+  createKeys,
+  sign
 }
