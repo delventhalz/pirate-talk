@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM rustlang/rust:nightly
+FROM rust:1.26
 
 # Need sawtooth-sdk to create keys
 RUN echo "deb http://repo.sawtooth.me/ubuntu/1.0/stable xenial universe" >> /etc/apt/sources.list \
@@ -34,5 +34,17 @@ RUN curl -OLsS https://github.com/google/protobuf/releases/download/v3.5.1/proto
 
 RUN apt-get update && apt-get install -y protobuf-compiler
 
+WORKDIR /pirate-talk/sabre
+RUN USER=root cargo new --bin cli
+
 WORKDIR /pirate-talk/sabre/cli
+COPY cli/Cargo.toml cli/Cargo.lock ./
+RUN cargo build
+
+WORKDIR /pirate-talk/sabre
+COPY . .
+
+WORKDIR /pirate-talk/sabre/cli
+RUN cargo build
+
 ENV PATH=$PATH:/pirate-talk/sabre/cli/target/debug/
