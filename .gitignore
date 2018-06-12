@@ -1,20 +1,7 @@
-/cli/Cargo.lock
 /cli/src/protos/
 /cli/target/
 
-/tp/Cargo.lock
 /tp/src/protos/
 /tp/target/
 
-/example/intkey_multiply/cli/target/
-/example/intkey_multiply/cli/Cargo.lock
-/example/intkey_multiply/processor/target/
-/example/intkey_multiply/processor/Cargo.lock
-
-/sdk/Cargo.lock
 /sdk/target/
-
-/keys
-
-/docs/build
-/docs/source/cli/output
