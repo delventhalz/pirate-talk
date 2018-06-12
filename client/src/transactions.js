@@ -1,29 +1,30 @@
-import {
+'use strict'
+
+const {
   Transaction,
   TransactionHeader,
   Batch,
   BatchHeader,
   BatchList
-} from 'sawtooth-sdk/protobuf';
-import { createHash } from 'crypto';
-import { getPublicKey, sign } from './signing.js';
-import { encode } from './encoding.js';
+} = require('sawtooth-sdk/protobuf')
+const { createHash } = require('crypto')
+const { getPublicKey, sign } = require('./signing.js')
+const { encode } = require('./encoding.js')
 
-
-const FAMILY_NAME = 'cryptomoji';
-const FAMILY_VERSION = '0.1';
-const NAMESPACE = '5f4d76';
+const FAMILY_NAME = 'cryptomoji'
+const FAMILY_VERSION = '0.1'
+const NAMESPACE = '5f4d76'
 
 // Takes a string and returns a hex-string SHA-512 hash
-const hash = str => createHash('sha512').update(str).digest('hex');
+const hash = str => createHash('sha512').update(str).digest('hex')
 
 // Returns a random 1-12 character string
-const getNonce = () => (Math.random() * 10 ** 18).toString(36);
+const getNonce = () => (Math.random() * 10 ** 18).toString(36)
 
 // Creates a signed transaction from a private key and payload
-export const createTransaction = (privateKey, payload) => {
-  const publicKey = getPublicKey(privateKey);
-  const encodedPayload = encode(payload);
+const createTransaction = (privateKey, payload) => {
+  const publicKey = getPublicKey(privateKey)
+  const encodedPayload = encode(payload)
 
   const header = TransactionHeader.encode({
     signerPublicKey: publicKey,
@@ -34,54 +35,61 @@ export const createTransaction = (privateKey, payload) => {
     outputs: [ NAMESPACE ],
     nonce: getNonce(),
     payloadSha512: hash(encodedPayload)
-  }).finish();
+  }).finish()
 
   return Transaction.create({
     header,
     headerSignature: sign(privateKey, header),
     payload: encodedPayload
-  });
-};
+  })
+}
 
 // Creates a signed batch from a private key and transactions
-export const createBatch = (privateKey, transactions) => {
-  const publicKey = getPublicKey(privateKey);
+const createBatch = (privateKey, transactions) => {
+  const publicKey = getPublicKey(privateKey)
   if (!Array.isArray(transactions)) {
-    transactions = [ transactions ];
+    transactions = [ transactions ]
   }
 
   const header = BatchHeader.encode({
     signerPublicKey: publicKey,
     transactionIds: transactions.map(t => t.headerSignature)
-  }).finish();
+  }).finish()
 
   return Batch.create({
     header,
     headerSignature: sign(privateKey, header),
     transactions
-  });
-};
+  })
+}
 
 // Encodes one or more batches in a batch list
-export const encodeBatches = batches => {
+const encodeBatches = batches => {
   if (!Array.isArray(batches)) {
-    batches = [ batches ];
+    batches = [ batches ]
   }
-  const batchList = BatchList.encode({ batches }).finish();
+  const batchList = BatchList.encode({ batches }).finish()
 
   // Axios will mishandle a Uint8Array constructed with a large ArrayBuffer.
   // The easiest workaround is to take a slice of the array.
-  return batchList.slice();
-};
+  return batchList.slice()
+}
 
 // Takes a private key and one or more payloads and returns a batch list
-export const encodeAll = (privateKey, payloads) => {
+const encodeAll = (privateKey, payloads) => {
   if (!Array.isArray(payloads)) {
-    payloads = [ payloads ];
+    payloads = [ payloads ]
   }
 
-  const transactions = payloads.map(p => createTransaction(privateKey, p));
-  const batch = createBatch(privateKey, transactions);
+  const transactions = payloads.map(p => createTransaction(privateKey, p))
+  const batch = createBatch(privateKey, transactions)
 
-  return encodeBatches(batch);
-};
+  return encodeBatches(batch)
+}
+
+module.exports = {
+  createTransaction,
+  createBatch,
+  encodeBatches,
+  encodeAll
+}
