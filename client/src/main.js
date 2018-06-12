@@ -3,6 +3,7 @@
 require('bootstrap')
 require('../styles/main.scss')
 const m = require('mithril')
+const { createKeys } = require('./signing')
 
 const getSubmitter = state => e => {
   e.preventDefault()
@@ -11,9 +12,17 @@ const getSubmitter = state => e => {
 }
 
 const App = {
+  oninit(vnode) {
+    vnode.state.keys = createKeys()
+  },
+
   view(vnode) {
     return m('.container', [
       m('h1.text-center.mb-5', 'Talk Like a Pirate'),
+      m('.row.mb-3',
+        m('.col-md',
+          m('h5', 'Public Key'),
+          vnode.state.keys.publicKey)),
       m('.row',
         m('.col-md',
           m('form.form-inline',
