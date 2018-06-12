@@ -15,9 +15,22 @@ const getSubmitter = state => e => {
   api.submit(body).then(() => { state.message = '' })
 }
 
+const Message = {
+  view(vnode) {
+    return m('.card.bg-light.mb-3', [
+      m('.card-header.text-muted', vnode.attrs.id),
+      m('.card-body',
+        m('h5.card-title', vnode.attrs.message))
+    ])
+  }
+}
+
 const App = {
   oninit(vnode) {
     vnode.state.keys = createKeys()
+    vnode.state.messages = []
+
+    api.fetch().then(messages => { vnode.state.messages = messages })
   },
 
   view(vnode) {
@@ -41,7 +54,7 @@ const App = {
                 { onclick: getSubmitter(vnode.state) },
                 'Submit')))),
         m('.col-md',
-          'YARRR TEST DATA!!!!'))
+          vnode.state.messages.map(attrs => m(Message, attrs))))
     ])
   }
 }
