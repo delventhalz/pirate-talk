@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+processor_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.insert(0, os.path.join(processor_dir))
+
+
+from pirate_processor.main import main
+
+if __name__ == '__main__':
+    main()
