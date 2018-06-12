@@ -12,10 +12,7 @@ const { BatchList } = require('sawtooth-sdk/protobuf')
 const getSubmitter = state => e => {
   e.preventDefault()
   const body = encodeTransaction(state.keys.privateKey, state.message)
-
-  api.submit(body).then(() => {
-    document.getElementById('message-input').value = ''
-  })
+  api.submit(body).then(() => { state.message = '' })
 }
 
 const App = {
@@ -37,6 +34,7 @@ const App = {
               m('label.sr-only', { for: 'message-input' }, 'Message'),
               m('input.form-control#message-input', {
                 placeholder: 'Enter message',
+                value: vnode.state.message,
                 oninput: m.withAttr('value', v => { vnode.state.message = v })
               }),
               m('button.btn.btn-primary.ml-1',
@@ -48,4 +46,4 @@ const App = {
   }
 }
 
-m.render(document.getElementById('app'), m(App))
+m.mount(document.getElementById('app'), App)
