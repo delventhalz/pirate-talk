@@ -8,6 +8,6 @@ RUN curl -OLsS https://github.com/google/protobuf/releases/download/v3.5.1/proto
  && rm protoc-3.5.1-linux-x86_64.zip
 RUN apt-get update && apt-get install -y protobuf-compiler
 
-WORKDIR /project/tp
+WORKDIR /pirate-talk/sabre/tp
 
-ENV PATH=$PATH:/project/tp/target/debug/
+ENV PATH=$PATH:/pirate-talk/sabre/tp/target/debug/

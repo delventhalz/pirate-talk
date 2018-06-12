@@ -34,5 +34,5 @@ RUN curl -OLsS https://github.com/google/protobuf/releases/download/v3.5.1/proto
 
 RUN apt-get update && apt-get install -y protobuf-compiler
 
-WORKDIR /project/cli
-ENV PATH=$PATH:/project/cli/target/debug/
+WORKDIR /pirate-talk/sabre/cli
+ENV PATH=$PATH:/pirate-talk/sabre/cli/target/debug/
