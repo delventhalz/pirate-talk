@@ -16,4 +16,18 @@ class PirateHandler(TransactionHandler):
         return ['aaaaaa']
 
     def apply(self, txn, context):
-        print('Hello {}!'.format(txn.header.signerPublicKey))
+        try:
+            message = str(txn.payload)
+        except Exception as e:
+            raise InvalidTransaction(e)
+
+        message = 'ya{} {}{}'.format(
+            'r' * int(len(message) / 3),
+            message,
+            '!' * int(len(message) / 5))
+        message.upper()
+
+        uuid = txn.signature[-32:]
+        address = 'aaaaaa' + ('0' * 32) + uuid
+
+        context.set_state({address: message})
