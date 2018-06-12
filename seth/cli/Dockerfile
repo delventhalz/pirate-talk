@@ -1,4 +1,4 @@
-# Copyright 2017 Intel Corporation
+# Copyright 2018 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,16 +15,8 @@
 
 FROM ubuntu:xenial
 
-ENV GOPATH=/project/sawtooth-seth/cli
-ENV PATH=$PATH:/project/sawtooth-seth/cli/bin:/project/sawtooth-seth/bin:/usr/lib/go-1.9/bin
-
-RUN \
- if [ ! -z $HTTP_PROXY ] && [ -z $http_proxy ]; then \
-  http_proxy=$HTTP_PROXY; \
- fi; \
- if [ ! -z $HTTPS_PROXY ] && [ -z $https_proxy ]; then \
-  https_proxy=$HTTPS_PROXY; \
- fi
+ENV GOPATH=/pirate-talk/seth/cli
+ENV PATH=$PATH:/pirate-talk/seth/cli/bin:/pirate-talk/seth/bin:/usr/lib/go-1.9/bin
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8AA7AF1F1091A5FD \
  && echo 'deb http://repo.sawtooth.me/ubuntu/1.0/stable xenial universe' >> /etc/apt/sources.list \
@@ -52,18 +44,6 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8AA7AF1F10
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-RUN \
- if [ ! -z $http_proxy ]; then \
-  npm config set proxy $http_proxy; \
-  git config --global http.proxy $http_proxy; \
- fi; \
- if [ ! -z $https_proxy ]; then \
-  npm config set https-proxy $https_proxy; \
-  git config --global https.proxy $https_proxy; \
- fi
-
-RUN git config --global url."https://".insteadOf git://
-
 RUN go get -u \
     github.com/btcsuite/btcd/btcec \
     github.com/golang/mock/gomock \
@@ -80,14 +60,71 @@ RUN go get github.com/hyperledger/sawtooth-sdk-go \
  && cd $GOPATH/src/github.com/hyperledger/sawtooth-sdk-go \
  && go generate
 
-RUN npm install \
-    ethereumjs-abi \
-    web3
-
-COPY . /project/sawtooth-seth
+COPY . /pirate-talk/seth
 
 RUN seth-protogen go
 
 WORKDIR $GOPATH/src/seth_cli/cli
-ENV GOPATH=$GOPATH:/project/sawtooth-seth/burrow:/project/sawtooth-seth/common
-RUN go build -o /project/sawtooth-seth/cli/bin/seth
+ENV GOPATH=$GOPATH:/pirate-talk/seth/burrow:/pirate-talk/seth/common
+RUN go build -o /pirate-talk/seth/cli/bin/seth
+
+
+WORKDIR /pirate-talk/seth/cli
+
+RUN pkg_dir=/project/build/debs/ \
+ && CHANGELOG_DIR="debian/usr/share/doc/sawtooth-seth" \
+ && if [ -d "debian" ]; then rm -rf debian; fi \
+ && mkdir -p $pkg_dir \
+ && mkdir -p debian/DEBIAN \
+ && mkdir -p $CHANGELOG_DIR \
+ && cp packaging/ubuntu/* debian \
+ && cp debian/changelog $CHANGELOG_DIR \
+ && mv debian/changelog $CHANGELOG_DIR/changelog.Debian \
+ && gzip --best $CHANGELOG_DIR/changelog \
+ && gzip --best $CHANGELOG_DIR/changelog.Debian \
+ && mv debian/control debian/DEBIAN \
+ && PACKAGENAME=$(awk '/^Package:/ { print $2 }' debian/DEBIAN/control) \
+ && PACKAGEVERSION=$(dpkg-parsechangelog -S version -l $CHANGELOG_DIR/changelog.gz) \
+ && PACKAGEARCH=$(dpkg-architecture -qDEB_BUILD_ARCH) \
+ && mkdir debian/usr/bin \
+ && cp -R bin/seth debian/usr/bin \
+ && fakeroot dpkg-deb --build debian \
+ && mv debian.deb $pkg_dir/"${PACKAGENAME}_${PACKAGEVERSION}_${PACKAGEARCH}.deb"
+
+FROM ubuntu:xenial
+
+RUN mkdir /debs
+
+COPY --from=0 /project/build/debs/sawtooth-seth-cli_*amd64.deb /debs
+
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8AA7AF1F1091A5FD \
+ && echo 'deb http://repo.sawtooth.me/ubuntu/1.0/stable xenial universe' >> /etc/apt/sources.list \
+ && apt-get update \
+ && apt-get install -y -q \
+    curl \
+    dpkg-dev \
+    git \
+    golang-1.9-go \
+    openssl \
+    python3-sawtooth-cli \
+    software-properties-common \
+ && add-apt-repository ppa:ethereum/ethereum \
+ && apt-get update \
+ && apt-get install -y -q \
+    solc \
+ && curl -s -S -o /tmp/setup-node.sh https://deb.nodesource.com/setup_6.x \
+ && chmod 755 /tmp/setup-node.sh \
+ && /tmp/setup-node.sh \
+ && apt-get install nodejs -y -q \
+ && rm /tmp/setup-node.sh \
+ && npm install \
+    ethereumjs-abi \
+    web3
+
+RUN cd /debs \
+ && dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz \
+ && echo "deb file:/debs ./" >> /etc/apt/sources.list \
+ && apt-get update \
+ && apt-get install sawtooth-seth-cli -y -q --allow-unauthenticated \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*

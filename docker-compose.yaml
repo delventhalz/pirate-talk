@@ -15,10 +15,13 @@ services:
         if [ ! -f /etc/sawtooth/keys/validator.priv ]; then
           sawadm keygen &&
           sawtooth keygen &&
-          sawset genesis  -k /etc/sawtooth/keys/validator.priv &&
+          sawset genesis \
+            -k /etc/sawtooth/keys/validator.priv \
+            -o config-genesis.batch &&
           sawset proposal create \
             -k /etc/sawtooth/keys/validator.priv \
             sawtooth.swa.administrators=$$(cat /root/.sawtooth/keys/root.pub) \
+            sawtooth.validator.batch_injectors=block_info \
             -o config.batch &&
           sawadm genesis config-genesis.batch config.batch
         fi;
@@ -56,6 +59,13 @@ services:
     container_name: settings-tp
     entrypoint: settings-tp -vv --connect tcp://validator:4004
 
+  block-info-tp:
+    image: hyperledger/sawtooth-block-info-tp:1.0
+    container_name: block-info-tp
+    depends_on:
+      - validator
+    command: block-info-tp -vv --connect tcp://validator:4004
+
   sabre-tp:
     image: sabre-tp
     container_name: sabre-tp
@@ -71,3 +81,51 @@ services:
       context: ./sabre
       dockerfile: cli/Dockerfile
     entrypoint: tail -f /dev/null
+
+  seth-tp:
+    image: seth-tp
+    container_name: seth-tp
+    build:
+      context: ./seth
+      dockerfile: processor/Dockerfile
+    depends_on:
+      - validator
+    command: |
+      bash -c "
+        cp /debs/*.deb /build
+        seth-tp -vv -C tcp://validator:4004
+      "
+
+  seth-cli:
+    image: seth-cli
+    container_name: seth-cli
+    build:
+      context: ./seth
+      dockerfile: cli/Dockerfile
+    depends_on:
+      - rest-api
+    entrypoint: |
+      bash -c "
+        cp /debs/*.deb /build
+        seth init http://rest-api:8008 &&
+        if [ ! -f /root/.sawtooth/keys/root.priv ]; then
+          sawtooth keygen
+        fi;
+        tail -f /dev/null
+      "
+
+  seth-rpc:
+    image: seth-rpc
+    container_name: seth-rpc
+    build:
+      context: ./seth
+      dockerfile: rpc/Dockerfile
+    depends_on:
+      - validator
+    ports:
+      - 3030:3030
+    command: |
+      bash -c "
+        cp /debs/*.deb /build
+        seth-rpc --connect tcp://validator:4004 --bind 0.0.0.0:3030
+      "

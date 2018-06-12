@@ -15,17 +15,9 @@
 
 FROM ubuntu:xenial
 
-ENV GOPATH=/project/sawtooth-seth/processor
-ENV PATH=$PATH:/project/sawtooth-seth/processor/bin:/project/sawtooth-seth/bin:/usr/lib/go-1.9/bin
+ENV GOPATH=/pirate-talk/seth/processor
+ENV PATH=$PATH:/pirate-talk/seth/processor/bin:/pirate-talk/seth/bin:/usr/lib/go-1.9/bin
 WORKDIR $GOPATH/src/seth_tp
-
-RUN \
- if [ ! -z $HTTP_PROXY ] && [ -z $http_proxy ]; then \
-  http_proxy=$HTTP_PROXY; \
- fi; \
- if [ ! -z $HTTPS_PROXY ] && [ -z $https_proxy ]; then \
-  https_proxy=$HTTPS_PROXY; \
- fi
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8AA7AF1F1091A5FD \
  && echo 'deb http://repo.sawtooth.me/ubuntu/1.0/stable xenial universe' >> /etc/apt/sources.list \
@@ -40,16 +32,6 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8AA7AF1F10
     python3-grpcio-tools=1.1.3-1 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
-
-RUN \
- if [ ! -z $http_proxy ]; then \
-  git config --global http.proxy $http_proxy; \
- fi; \
- if [ ! -z $https_proxy ]; then \
-  git config --global https.proxy $https_proxy; \
- fi
-
-RUN git config --global url."https://".insteadOf git://
 
 RUN go get -u \
     github.com/btcsuite/btcd/btcec \
@@ -67,9 +49,50 @@ RUN go get github.com/hyperledger/sawtooth-sdk-go \
  && cd $GOPATH/src/github.com/hyperledger/sawtooth-sdk-go \
  && go generate
 
-COPY . /project/sawtooth-seth
+COPY . /pirate-talk/seth
 
 RUN seth-protogen go
 
-ENV GOPATH=$GOPATH:/project/sawtooth-seth/burrow:/project/sawtooth-seth/common
-RUN go build -o /project/sawtooth-seth/processor/bin/seth-tp
+ENV GOPATH=$GOPATH:/pirate-talk/seth/burrow:/pirate-talk/seth/common
+RUN go build -o /pirate-talk/seth/processor/bin/seth-tp
+
+WORKDIR /pirate-talk/seth/processor
+
+RUN pkg_dir=/project/build/debs/ \
+ && CHANGELOG_DIR="debian/usr/share/doc/sawtooth-seth" \
+ && if [ -d "debian" ]; then rm -rf debian; fi \
+ && mkdir -p $pkg_dir \
+ && mkdir -p debian/DEBIAN \
+ && mkdir -p $CHANGELOG_DIR \
+ && cp packaging/ubuntu/* debian \
+ && cp debian/changelog $CHANGELOG_DIR \
+ && mv debian/changelog $CHANGELOG_DIR/changelog.Debian \
+ && gzip --best $CHANGELOG_DIR/changelog \
+ && gzip --best $CHANGELOG_DIR/changelog.Debian \
+ && mv debian/control debian/DEBIAN \
+# && mv debian/postinst debian/DEBIAN \
+ && PACKAGENAME=$(awk '/^Package:/ { print $2 }' debian/DEBIAN/control) \
+ && PACKAGEVERSION=$(dpkg-parsechangelog -S version -l $CHANGELOG_DIR/changelog.gz) \
+ && PACKAGEARCH=$(dpkg-architecture -qDEB_BUILD_ARCH) \
+ && mkdir debian/usr/bin \
+ && cp -R bin/seth-tp debian/usr/bin \
+# && cp -R packaging/systemd/* debian/ \
+ && fakeroot dpkg-deb --build debian \
+ && mv debian.deb $pkg_dir/"${PACKAGENAME}_${PACKAGEVERSION}_${PACKAGEARCH}.deb"
+
+FROM ubuntu:xenial
+
+RUN mkdir /debs
+
+COPY --from=0 /project/build/debs/sawtooth-seth-tp_*amd64.deb /debs
+
+RUN apt-get update \
+ && apt-get install -y -q \
+    dpkg-dev \
+ && cd /debs \
+ && dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz \
+ && echo "deb file:/debs ./" >> /etc/apt/sources.list \
+ && apt-get update \
+ && apt-get install sawtooth-seth-tp -y -q --allow-unauthenticated \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
