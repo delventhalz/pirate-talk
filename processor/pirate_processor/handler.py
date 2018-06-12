@@ -2,6 +2,13 @@ from sawtooth_sdk.processor.handler import TransactionHandler
 from sawtooth_sdk.processor.exceptions import InvalidTransaction
 
 
+def piratify(msg):
+    return 'yar{} {}{}!'.format(
+        'r' * int(len(msg) / 3),
+        msg,
+        '!' * int(len(msg) / 5)
+    ).upper()
+
 class PirateHandler(TransactionHandler):
     @property
     def family_name(self):
@@ -17,17 +24,12 @@ class PirateHandler(TransactionHandler):
 
     def apply(self, txn, context):
         try:
-            message = str(txn.payload)
+            message = txn.payload.decode('utf-8')
         except Exception as e:
             raise InvalidTransaction(e)
 
-        message = 'ya{} {}{}'.format(
-            'r' * int(len(message) / 3),
-            message,
-            '!' * int(len(message) / 5))
-        message.upper()
-
+        pirate_message = piratify(message)
         uuid = txn.signature[-32:]
-        address = 'aaaaaa' + ('0' * 32) + uuid
+        address = 'aaaaaa' + ('a' * 32) + uuid
 
-        context.set_state({address: message})
+        context.set_state({address: pirate_message.encode('utf-8')})
