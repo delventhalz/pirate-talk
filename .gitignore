@@ -1,7 +1,7 @@
-/cli/src/protos/
-/cli/target/
+/sabre/cli/src/protos/
+/sabre/cli/target/
 
-/tp/src/protos/
-/tp/target/
+/sabre/tp/src/protos/
+/sabre/tp/target/
 
-/sdk/target/
+/sabre/sdk/target/
