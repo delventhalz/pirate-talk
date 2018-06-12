@@ -3,12 +3,19 @@
 require('bootstrap')
 require('../styles/main.scss')
 const m = require('mithril')
+const api = require('./api')
 const { createKeys } = require('./signing')
+const { encodeTransaction } = require('./transactions')
+
+const { BatchList } = require('sawtooth-sdk/protobuf')
 
 const getSubmitter = state => e => {
   e.preventDefault()
-  console.log(state.message)
-  document.getElementById('message-input').value = ''
+  const body = encodeTransaction(state.keys.privateKey, state.message)
+
+  api.submit(body).then(() => {
+    document.getElementById('message-input').value = ''
+  })
 }
 
 const App = {
