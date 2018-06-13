@@ -34,6 +34,15 @@ services:
     working_dir: /pirate-talk/processor/
     entrypoint: bin/pirate-tp --connect tcp://validator:4004
 
+  rust-tp:
+    image: rust-tp
+    container_name: rust-tp
+    build: ./rust-tp
+    volumes:
+      - ./rust-tp/:/pirate-talk/rust-tp/
+      - /pirate-talk/rust-tp/target/
+    entrypoint: bash -c "cargo build && rust-tp --connect tcp://validator:4004"
+
   validator:
     image: hyperledger/sawtooth-validator:1.0
     container_name: validator
