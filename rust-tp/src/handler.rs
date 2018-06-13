@@ -5,6 +5,12 @@ use sawtooth_sdk::processor::handler::TransactionHandler;
 use sawtooth_sdk::messages::processor::TpProcessRequest;
 
 
+fn piratify(msg: String) -> String {
+    let rs = repeat("r").take(msg.len() / 3 + 1).collect::<String>();
+    let excls = repeat("!").take(msg.len() / 5 + 1).collect::<String>();
+    format!("{}{} {}{}", "ya", rs, msg, excls).to_uppercase()
+}
+
 pub struct PirateHandler {
     family_name: String,
     family_versions: Vec<String>,
@@ -40,15 +46,19 @@ impl TransactionHandler for PirateHandler {
         context: &mut TransactionContext,
     ) -> Result<(), ApplyError> {
         let signature = txn.get_signature();
-        let payload = txn.get_payload();
+        let message = match String::from_utf8(txn.get_payload().to_vec()) {
+            Err(e) => return Err(ApplyError::InvalidTransaction(e.to_string())),
+            Ok(payload) => payload
+        };
 
         let uuid = signature[96..].to_string();
         let filler = repeat("a").take(32).collect::<String>();
         let address = "aaaaaa".to_string() + &filler + &uuid;
 
-        println!("YARRRR SAVING A MESSAGE!!!!");
-        context.set_state(&address, payload);
+        let pirate_message = piratify(message);
+        println!("{}", pirate_message);
 
+        context.set_state(&address, pirate_message.as_bytes());
         Ok(())
     }
 }
