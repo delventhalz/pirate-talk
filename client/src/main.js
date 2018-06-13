@@ -13,17 +13,14 @@ const getSubmitFn = state => e => {
   api.submit(body).then(() => { state.newText = '' })
 }
 
-const getSpeakFn = () => {
+const speak = text => {
   const synth = window.speechSynthesis
+  const speechified = text
+    .replace('YAR', 'yar')
+    .replace(/!/g, ' exclamation point')
 
-  return text => {
-    const speechified = text
-      .replace('YAR', 'yar')
-      .replace(/!/g, ' exclamation point')
-
-    const utterance = new window.SpeechSynthesisUtterance(speechified)
-    synth.speak(utterance)
-  }
+  const utterance = new window.SpeechSynthesisUtterance(speechified)
+  synth.speak(utterance)
 }
 
 const MessageInput = {
@@ -49,7 +46,9 @@ const MessageInput = {
 
 const Message = {
   view (vnode) {
-    return m('.card.bg-light.mb-3', [
+    return m('.card.bg-light.mb-3', {
+      onclick: () => speak(vnode.attrs.text)
+    }, [
       m('.card-header.text-muted', vnode.attrs.id),
       m('.card-body',
         m('h5.card-title', vnode.attrs.text))
@@ -59,7 +58,6 @@ const Message = {
 
 const App = {
   oninit (vnode) {
-    const speak = getSpeakFn()
     vnode.state.keys = createKeys()
     vnode.state.messages = []
 
