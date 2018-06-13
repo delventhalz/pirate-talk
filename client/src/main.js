@@ -7,8 +7,6 @@ const api = require('./api')
 const { createKeys } = require('./signing')
 const { encodeTransaction } = require('./transactions')
 
-const { BatchList } = require('sawtooth-sdk/protobuf')
-
 const getSubmitFn = state => e => {
   e.preventDefault()
   const body = encodeTransaction(state.privateKey, state.message)
