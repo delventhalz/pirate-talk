@@ -13,6 +13,19 @@ const getSubmitFn = state => e => {
   api.submit(body).then(() => { state.message = '' })
 }
 
+const getSpeakFn = () => {
+  const synth = window.speechSynthesis
+
+  return text => {
+    const speechified = text
+      .replace('YAR', 'yar')
+      .replace(/!/g, ' exclamation point')
+
+    const utterance = new SpeechSynthesisUtterance(speechified)
+    synth.speak(utterance)
+  }
+}
+
 const MessageSubmitter = {
   oninit(vnode) {
     vnode.state.privateKey = vnode.attrs.privateKey
@@ -46,12 +59,14 @@ const Message = {
 
 const App = {
   oninit(vnode) {
+    const speak = getSpeakFn()
     vnode.state.keys = createKeys()
     vnode.state.messages = []
 
     api.fetch().then(messages => { vnode.state.messages = messages })
     api.subscribe(messages => {
       vnode.state.messages = messages.concat(vnode.state.messages)
+      messages.forEach(({ message }) => speak(message))
     })
   },
 
