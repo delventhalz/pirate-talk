@@ -58,7 +58,9 @@ impl TransactionHandler for PirateHandler {
         let pirate_message = piratify(message);
         println!("{}", pirate_message);
 
-        context.set_state(&address, pirate_message.as_bytes());
-        Ok(())
+        match context.set_state(&address, pirate_message.as_bytes()) {
+            Err(e) => Err(ApplyError::InternalError(e.to_string())),
+            Ok(_) => Ok(())
+        }
     }
 }
