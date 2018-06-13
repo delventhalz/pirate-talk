@@ -67,6 +67,7 @@ const App = {
     api.subscribe(messages => {
       vnode.state.messages = messages.concat(vnode.state.messages)
       messages.forEach(({ text }) => speak(text))
+      m.redraw()
     })
   },
 

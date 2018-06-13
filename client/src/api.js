@@ -35,11 +35,6 @@ const submit = data => {
     // prevent Mithril from trying to JSON stringify the body
     serialize: x => x,
     data
-  }).then(({ link }) => {
-    return m.request({
-      method: 'GET',
-      url: link + '&wait'
-    })
   })
 }
 
