@@ -21,7 +21,7 @@ const fetch = () => {
   }).then(({ data }) => {
     return data.map(({ address, data }) => ({
       id: toUuid(address),
-      message: window.atob(data)
+      text: window.atob(data)
     }))
   })
 }
@@ -68,7 +68,7 @@ const subscribe = onReceive => {
     const changes = JSON.parse(data).state_changes
     onReceive(changes.map(({ address, value }) => ({
       id: toUuid(address),
-      message: window.atob(value)
+      text: window.atob(value)
     })))
   }
 }

@@ -9,8 +9,8 @@ const { encodeTransaction } = require('./transactions')
 
 const getSubmitFn = state => e => {
   e.preventDefault()
-  const body = encodeTransaction(state.privateKey, state.message)
-  api.submit(body).then(() => { state.message = '' })
+  const body = encodeTransaction(state.privateKey, state.newText)
+  api.submit(body).then(() => { state.newText = '' })
 }
 
 const getSpeakFn = () => {
@@ -37,8 +37,8 @@ const MessageSubmitter = {
         m('label.sr-only', { for: 'message-input' }, 'Message'),
         m('input.form-control#message-input', {
           placeholder: 'Enter message',
-          value: vnode.state.message,
-          oninput: m.withAttr('value', v => { vnode.state.message = v })
+          value: vnode.state.newText,
+          oninput: m.withAttr('value', v => { vnode.state.newText = v })
         }),
         m('button.btn.btn-primary.ml-2',
           { onclick: getSubmitFn(vnode.state) },
@@ -52,7 +52,7 @@ const Message = {
     return m('.card.bg-light.mb-3', [
       m('.card-header.text-muted', vnode.attrs.id),
       m('.card-body',
-        m('h5.card-title', vnode.attrs.message))
+        m('h5.card-title', vnode.attrs.text))
     ])
   }
 }
@@ -66,7 +66,7 @@ const App = {
     api.fetch().then(messages => { vnode.state.messages = messages })
     api.subscribe(messages => {
       vnode.state.messages = messages.concat(vnode.state.messages)
-      messages.forEach(({ message }) => speak(message))
+      messages.forEach(({ text }) => speak(text))
     })
   },
 
