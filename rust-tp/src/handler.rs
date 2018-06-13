@@ -1,3 +1,4 @@
+use std::iter::repeat;
 use sawtooth_sdk::processor::handler::ApplyError;
 use sawtooth_sdk::processor::handler::TransactionContext;
 use sawtooth_sdk::processor::handler::TransactionHandler;
@@ -40,7 +41,10 @@ impl TransactionHandler for PirateHandler {
     ) -> Result<(), ApplyError> {
         let signature = txn.get_signature();
         let payload = txn.get_payload();
-        let address= "aaaaaa".to_string() + signature[64..].to_string();
+
+        let uuid = signature[96..].to_string();
+        let filler = repeat("a").take(32).collect::<String>();
+        let address = "aaaaaa".to_string() + &filler + &uuid;
 
         println!("YARRRR SAVING A MESSAGE!!!!");
         context.set_state(&address, payload);
