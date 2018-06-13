@@ -2,7 +2,11 @@
 extern crate clap;
 extern crate sawtooth_sdk;
 
+mod handler;
+
 use sawtooth_sdk::processor::TransactionProcessor;
+use handler::PirateHandler;
+
 
 fn main() {
     let matches = clap_app!(intkey =>
@@ -16,7 +20,9 @@ fn main() {
         .value_of("connect")
         .unwrap_or("tcp://localhost:4004");
 
+    let handler = PirateHandler::new();
     let mut processor = TransactionProcessor::new(endpoint);
+    processor.add_handler(&handler);
 
     println!("YARRRR READY TO TALK LIKE A PIRATE!!!");
     processor.start();
