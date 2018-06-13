@@ -27,11 +27,13 @@ def main():
         handler = PirateHandler()
         processor.add_handler(handler)
 
+        print('YARRRR READY TO TALK LIKE A PIRATE!!!')
         processor.start()
     except KeyboardInterrupt:
         pass
     except Exception as e:
-        print('Error: {}'.format(e), file=sys.stderr)
+        print('YARRRR BROKE: {}'.format(e), file=sys.stderr)
     finally:
+        print('YARRRRRRR NO MORE PIRATE TALK TODAY!!!!!')
         if processor is not None:
             processor.stop()

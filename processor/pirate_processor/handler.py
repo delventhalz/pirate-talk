@@ -32,4 +32,5 @@ class PirateHandler(TransactionHandler):
         uuid = txn.signature[-32:]
         address = 'aaaaaa' + ('a' * 32) + uuid
 
+        print(pirate_message)
         context.set_state({address: pirate_message.encode('utf-8')})

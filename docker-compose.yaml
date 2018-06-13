@@ -29,6 +29,8 @@ services:
     container_name: pirate-tp
     volumes:
       - ./processor/:/pirate-talk/processor/
+    environment:
+      - PYTHONUNBUFFERED=0
     working_dir: /pirate-talk/processor/
     entrypoint: bin/pirate-tp --connect tcp://validator:4004
 
