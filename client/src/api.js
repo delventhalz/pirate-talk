@@ -56,8 +56,12 @@ const subscribe = onReceive => {
   }
 
   // Send new messages to callback as they are committed
-  socket.onmessage = msg => {
-    console.log('MESSAGE:', msg)
+  socket.onmessage = ({ data }) => {
+    const { state_changes } = JSON.parse(data)
+    onReceive(state_changes.map(({ address, value }) => ({
+      id: toUuid(address),
+      message: window.atob(value)
+    })))
   }
 }
 
