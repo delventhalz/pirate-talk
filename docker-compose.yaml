@@ -12,6 +12,14 @@ services:
     ports:
       - 8080:80
 
+  pirate-tp:
+    image: hyperledger/sawtooth-shell:1.0
+    container_name: pirate-tp
+    volumes:
+      - ./processor/:/pirate-talk/processor/
+    working_dir: /pirate-talk/processor/
+    entrypoint: bin/pirate-tp --connect tcp://validator:4004
+
   validator:
     image: hyperledger/sawtooth-validator:1.0
     container_name: validator
