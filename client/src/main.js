@@ -21,17 +21,17 @@ const getSpeakFn = () => {
       .replace('YAR', 'yar')
       .replace(/!/g, ' exclamation point')
 
-    const utterance = new SpeechSynthesisUtterance(speechified)
+    const utterance = new window.SpeechSynthesisUtterance(speechified)
     synth.speak(utterance)
   }
 }
 
 const MessageSubmitter = {
-  oninit(vnode) {
+  oninit (vnode) {
     vnode.state.privateKey = vnode.attrs.privateKey
   },
 
-  view(vnode) {
+  view (vnode) {
     return m('form.form-inline', [
       m('form-group',
         m('label.sr-only', { for: 'message-input' }, 'Message'),
@@ -48,7 +48,7 @@ const MessageSubmitter = {
 }
 
 const Message = {
-  view(vnode) {
+  view (vnode) {
     return m('.card.bg-light.mb-3', [
       m('.card-header.text-muted', vnode.attrs.id),
       m('.card-body',
@@ -58,7 +58,7 @@ const Message = {
 }
 
 const App = {
-  oninit(vnode) {
+  oninit (vnode) {
     const speak = getSpeakFn()
     vnode.state.keys = createKeys()
     vnode.state.messages = []
@@ -70,7 +70,7 @@ const App = {
     })
   },
 
-  view(vnode) {
+  view (vnode) {
     return m('.container', [
       m('h1.text-center.mb-5', 'Talk Like a Pirate'),
       m('.row.mb-3',
