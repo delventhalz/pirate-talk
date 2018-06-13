@@ -46,6 +46,7 @@ const submit = data => {
 // Subscribes to blockchain state changes, passing new messages to a callback
 const subscribe = onReceive => {
   const socket = new WebSocket(`ws:${window.location.host}/api/subscriptions`)
+  let isFirstMessage = true
 
   // Subscribe to state deltas
   socket.onopen = () => {
@@ -57,6 +58,9 @@ const subscribe = onReceive => {
 
   // Send new messages to callback as they are committed
   socket.onmessage = ({ data }) => {
+    // The first message is already in state data, so we will throw it away
+    if (isFirstMessage) return isFirstMessage = false
+
     const { state_changes } = JSON.parse(data)
     onReceive(state_changes.map(({ address, value }) => ({
       id: toUuid(address),
