@@ -26,7 +26,7 @@ const getSpeakFn = () => {
   }
 }
 
-const MessageSubmitter = {
+const MessageInput = {
   oninit (vnode) {
     vnode.state.privateKey = vnode.attrs.privateKey
   },
@@ -72,16 +72,19 @@ const App = {
 
   view (vnode) {
     return m('.container', [
-      m('h1.text-center.mb-5', 'Talk Like a Pirate'),
-      m('.row.mb-3',
-        m('.col-md',
+      m('h1.text-center.mb-5', 'Talk Like A Pirate'),
+      m('.row.mb-5',
+        m('.col-lg',
           m('h5', 'Public Key'),
           vnode.state.keys.publicKey)),
       m('.row',
-        m('.col-md',
-          m(MessageSubmitter, vnode.state.keys)),
-        m('.col-md',
-          vnode.state.messages.map(attrs => m(Message, attrs))))
+        m('.col-lg-4.mb-3',
+          m(MessageInput, vnode.state.keys)),
+        m('.col-lg-8',
+          vnode.state.messages.length !== 0
+            ? vnode.state.messages.map(attrs => m(Message, attrs))
+            : m('h5.text-muted.font-italic.text-center',
+                'The chain pirates are silent')))
     ])
   }
 }
