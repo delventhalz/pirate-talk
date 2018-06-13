@@ -43,7 +43,26 @@ const submit = data => {
   })
 }
 
+// Subscribes to blockchain state changes, passing new messages to a callback
+const subscribe = onReceive => {
+  const socket = new WebSocket(`ws:${window.location.host}/api/subscriptions`)
+
+  // Subscribe to state deltas
+  socket.onopen = () => {
+    socket.send(JSON.stringify({
+      action: 'subscribe',
+      address_prefixes: ['aaaaaa']
+    }))
+  }
+
+  // Send new messages to callback as they are committed
+  socket.onmessage = msg => {
+    console.log('MESSAGE:', msg)
+  }
+}
+
 module.exports = {
   fetch,
-  submit
+  submit,
+  subscribe
 }

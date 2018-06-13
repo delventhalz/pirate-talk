@@ -52,6 +52,7 @@ const App = {
     vnode.state.messages = []
 
     api.fetch().then(messages => { vnode.state.messages = messages })
+    api.subscribe()
   },
 
   view(vnode) {
