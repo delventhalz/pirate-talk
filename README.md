@@ -9,6 +9,8 @@ Sawtooth ecosystem:
  - Seth Solidity smart contracts
  - Sabre WASM smart contracts
 
+_Note: Sabre/Seth integration is still a work in progress_
+
 ## Contents
 
 - [Usage](#usage)
