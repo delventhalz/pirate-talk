@@ -86,6 +86,14 @@ Exiting a container
 exit
 ```
 
+## Slides
+
+The slides for the June 2018 Sawtooth App Development presentation are available online in a variety of formats:
+ - [Google Slides](https://docs.google.com/presentation/d/1LqvY7aJr-yZ1sGuOatbxZv-Bq1VE0mQgJf9ikk_bVwE/edit?usp=sharing)
+ - [MS PowerPoint](presentation/sawtooth_app_development_06_2018.pptx)
+ - [Open Doc](presentation/sawtooth_app_development_06_2018.odp)
+ - [PDF](presentation/sawtooth_app_development_06_2018.pdf)
+
 ## License
 
 The source code of this project is licensed for reuse under the
