@@ -9,6 +9,16 @@ Sawtooth ecosystem:
  - Seth Solidity smart contracts
  - Sabre WASM smart contracts
 
+## Contents
+
+- [Usage](#usage)
+    * [Docker Cheatsheet](#docker-cheatsheet)
+        - [Building/Destroying](#building-destroying)
+        - [Starting/Stopping](#starting-stopping)
+        - [Running commands from within a container](#running-commands-from-within-a-container)
+- [Slides](#slides)
+- [License](#license)
+
 ## Usage
 
 This entire app can be run just using only
@@ -65,7 +75,7 @@ Start a stopped component:
 docker start pirate-tp
 ```
 
-#### Run commands from within a Docker container
+#### Running commands from within a container
 
 It is possible to enter a Docker container to use bash. This is sometimes
 useful for various development tasks, especially if you do not have
