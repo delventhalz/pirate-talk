@@ -24,24 +24,28 @@ services:
       - ./client/:/pirate-talk/client/
       - /pirate-talk/client/node_modules
 
-  pirate-tp:
+  processor-python:
     image: hyperledger/sawtooth-shell:1.0
-    container_name: pirate-tp
+    container_name: processor-python
     volumes:
-      - ./processor/:/pirate-talk/processor/
+      - ./processor-python/:/pirate-talk/processor-python/
     environment:
       - PYTHONUNBUFFERED=0
-    working_dir: /pirate-talk/processor/
+    working_dir: /pirate-talk/processor-python/
     entrypoint: bin/pirate-tp --connect tcp://validator:4004
 
-  rust-tp:
-    image: rust-tp
-    container_name: rust-tp
-    build: ./rust-tp
+  processor-rust:
+    image: processor-rust
+    container_name: processor-rust
+    build: ./processor-rust
     volumes:
-      - ./rust-tp/:/pirate-talk/rust-tp/
-      - /pirate-talk/rust-tp/target/
-    entrypoint: bash -c "cargo build && rust-tp --connect tcp://validator:4004"
+      - ./processor-rust/:/pirate-talk/processor-rust/
+      - /pirate-talk/processor-rust/target/
+    entrypoint: |
+      bash -c "
+        cargo build &&
+        pirate-tp --connect tcp://validator:4004
+      "
 
   validator:
     image: hyperledger/sawtooth-validator:1.0

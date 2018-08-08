@@ -161,6 +161,16 @@ version = "0.2.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "pirate-tp"
+version = "0.0.0"
+dependencies = [
+ "clap 2.31.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "protoc-rust 2.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sawtooth_sdk 0.1.0 (git+https://github.com/hyperledger/sawtooth-core.git)",
+ "zmq 0.8.2 (git+https://github.com/erickt/rust-zmq?branch=release/v0.8)",
+]
+
+[[package]]
 name = "pkg-config"
 version = "0.3.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -248,16 +258,6 @@ dependencies = [
  "rand 0.3.22 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.24 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.40 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "rust-tp"
-version = "0.0.0"
-dependencies = [
- "clap 2.31.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "protoc-rust 2.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "sawtooth_sdk 0.1.0 (git+https://github.com/hyperledger/sawtooth-core.git)",
- "zmq 0.8.2 (git+https://github.com/erickt/rust-zmq?branch=release/v0.8)",
 ]
 
 [[package]]

@@ -10,9 +10,9 @@ RUN apt-get update && apt-get install -y protobuf-compiler
 
 # Cache dependencies
 WORKDIR /pirate-talk
-RUN USER=root cargo new --bin rust-tp
-WORKDIR /pirate-talk/rust-tp
+RUN USER=root cargo new --bin processor-rust
+WORKDIR /pirate-talk/processor-rust
 COPY Cargo.toml Cargo.lock ./
 RUN cargo build
 
-ENV PATH=$PATH:/pirate-talk/rust-tp/target/debug/
+ENV PATH=$PATH:/pirate-talk/processor-rust/target/debug/
