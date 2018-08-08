@@ -1,15 +1,13 @@
 # Sawtooth PirateTalk
 
-This is an example Sawtooth application, built for a presentation at Open
-Source North 2018. It uses a simple fun app to showcase many parts of the
-Sawtooth ecosystem:
+This is an example Sawtooth application, built for blockchain presentations at
+Open Source North and MidwestJS 2018. It uses a simple fun app to showcase many
+parts of the Sawtooth ecosystem:
  - Javascript client transaction submission
  - REST API state delta subscriptions
- - Python transaction processors
- - Seth Solidity smart contracts
- - Sabre WASM smart contracts
-
-_Note: Sabre/Seth integration is still a work in progress_
+ - Javascript, Python, and Rust transaction processors
+ - Seth Solidity smart contracts (WIP)
+ - Sabre WASM smart contracts (WIP)
 
 ## Contents
 
