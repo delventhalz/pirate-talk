@@ -16,8 +16,8 @@ const decode = payload => {
 }
 
 const piratify = msg => {
-  const ars = 'r'.repeat(msg.length / 3)
-  const exlcaims = '!'.repeat(msg.length / 5)
+  const ars = 'r'.repeat(Math.floor(msg.length / 3))
+  const exlcaims = '!'.repeat(Math.floor(msg.length / 5))
   return `yar${ars} ${msg}${exclaims}`.toUpperCase()
 }
 
@@ -30,8 +30,11 @@ class PirateHandler extends TransactionHandler {
     const message = decode(txn.payload)
     const pirateMessage = piratify(message)
 
+    const uuid = txn.signature.slice(-32)
+    const address = NAMESPACE + 'a'.repeat(32) + uuid
+
     console.log(pirateMessage)
-    return Promise.resolve()
+    return context.setState({ address: Buffer.from(pirateMessage, 'utf8') })
   }
 }
 
