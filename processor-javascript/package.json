@@ -4,6 +4,7 @@
   "description": "YARRRR A DISTRIBUTED APP TO HELP YOU TALK LIKE A PIRATE!!!!",
   "main": "index.js",
   "scripts": {
+    "lint": "standard | sed 's/^.*\\/clients\\//    /' || true",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,5 +20,8 @@
   "homepage": "https://github.com/delventhalz/pirate-talk#readme",
   "dependencies": {
     "sawtooth-sdk": "^1.0.5"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
   }
 }
