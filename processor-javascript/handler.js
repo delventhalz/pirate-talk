@@ -15,6 +15,12 @@ const decode = payload => {
   }
 }
 
+const piratify = msg => {
+  const ars = 'r'.repeat(msg.length / 3)
+  const exlcaims = '!'.repeat(msg.length / 5)
+  return `yar${ars} ${msg}${exclaims}`.toUpperCase()
+}
+
 class PirateHandler extends TransactionHandler {
   constructor () {
     super(FAMILY_NAME, [ FAMILY_VERSION ], [ NAMESPACE ])
@@ -22,8 +28,9 @@ class PirateHandler extends TransactionHandler {
 
   apply (txn, context) {
     const message = decode(txn.payload)
+    const pirateMessage = piratify(message)
 
-    console.log(message)
+    console.log(pirateMessage)
     return Promise.resolve()
   }
 }
