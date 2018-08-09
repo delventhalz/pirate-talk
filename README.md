@@ -98,11 +98,12 @@ exit
 
 ## Slides
 
-The slides for the June 2018 Sawtooth App Development presentation are available online in a variety of formats:
- - [Google Slides](https://docs.google.com/presentation/d/1LqvY7aJr-yZ1sGuOatbxZv-Bq1VE0mQgJf9ikk_bVwE/edit?usp=sharing)
- - [MS PowerPoint](presentation/sawtooth_app_development_06_2018.pptx)
- - [Open Doc](presentation/sawtooth_app_development_06_2018.odp)
- - [PDF](presentation/sawtooth_app_development_06_2018.pdf)
+The slides for the June 2018 Sawtooth App Development presentation are
+available online in a variety of formats:
+ - [Google Slides](https://docs.google.com/presentation/d/1cSSimL-evPxT-8DDxjvKwKFNbxgNklzQoxVhOLBWvRs/edit?usp=sharing)
+ - [MS PowerPoint](presentation/blockchain_apps_08_2018.pptx)
+ - [Open Doc](presentation/blockchain_apps_08_2018.odp)
+ - [PDF](presentation/blockchain_apps_08_2018.pdf)
 
 ## License
 
