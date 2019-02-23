@@ -1,4 +1,4 @@
-# Sawtooth PirateTalk
+# Crypto Bonds
 
 This is an example Sawtooth application, built for blockchain presentations at
 Open Source North and MidwestJS 2018. It uses a simple fun app to showcase many
@@ -95,15 +95,6 @@ Exiting a container
 ```bash
 exit
 ```
-
-## Slides
-
-The slides for the June 2018 Sawtooth App Development presentation are
-available online in a variety of formats:
- - [Google Slides](https://docs.google.com/presentation/d/1cSSimL-evPxT-8DDxjvKwKFNbxgNklzQoxVhOLBWvRs/edit?usp=sharing)
- - [MS PowerPoint](presentation/blockchain_apps_08_2018.pptx)
- - [Open Doc](presentation/blockchain_apps_08_2018.odp)
- - [PDF](presentation/blockchain_apps_08_2018.pdf)
 
 ## License
 
