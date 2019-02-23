@@ -24,15 +24,6 @@ services:
       - ./client/:/pirate-talk/client/
       - /pirate-talk/client/node_modules
 
-  processor-javascript:
-    image: processor-javascript
-    container_name: processor-javascript
-    build: ./processor-javascript
-    volumes:
-       - ./processor-javascript/:/pirate-talk/processor-javascript/
-       - /pirate-talk/processor-javascript/node_modules/
-    environment:
-      - VALIDATOR_URL=tcp://validator:4004
 
   processor-python:
     image: hyperledger/sawtooth-shell:1.0
@@ -44,18 +35,6 @@ services:
     working_dir: /pirate-talk/processor-python/
     entrypoint: bin/pirate-tp --connect tcp://validator:4004
 
-  processor-rust:
-    image: processor-rust
-    container_name: processor-rust
-    build: ./processor-rust
-    volumes:
-      - ./processor-rust/:/pirate-talk/processor-rust/
-      - /pirate-talk/processor-rust/target/
-    entrypoint: |
-      bash -c "
-        cargo build &&
-        pirate-tp --connect tcp://validator:4004
-      "
 
   validator:
     image: hyperledger/sawtooth-validator:1.0
