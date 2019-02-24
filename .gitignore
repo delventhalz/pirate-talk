@@ -1,17 +1,4 @@
 dist/
 node_modules/
 
-/sabre/cli/src/protos/
-/sabre/cli/target/
-/sabre/tp/src/protos/
-/sabre/tp/target/
-/sabre/sdk/target/
-
-/seth/cli/bin/
-/seth/common/protobuf/
-/seth/processor/bin/
-/seth/rpc/Cargo.lock
-/seth/rpc/target/
-/seth/rpc/src/messages/*.rs
-!/seth/rpc/src/messages/mod.rs
-/seth/rpc/tests/protobuf/
+processor-python/pirate_processor/__pychache__/**

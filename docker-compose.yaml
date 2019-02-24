@@ -100,19 +100,3 @@ services:
     depends_on:
       - validator
     command: block-info-tp -vv --connect tcp://validator:4004
-
-  sabre-tp:
-    image: sabre-tp
-    container_name: sabre-tp
-    build:
-      context: ./sabre
-      dockerfile: tp/Dockerfile
-    entrypoint: sawtooth-sabre -vv -C tcp://validator:4004
-
-  sabre-cli:
-    image: sabre-cli
-    container_name: sabre-cli
-    build:
-      context: ./sabre
-      dockerfile: cli/Dockerfile
-    entrypoint: tail -f /dev/null
