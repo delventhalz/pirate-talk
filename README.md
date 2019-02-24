@@ -1,3 +1,29 @@
+#naming
+Owner
+pubkey = ‘uuid’
+type
+
+Bond Type
+company_pubkey
+bank_pubkey
+num_issued
+denomination
+interest_rate
+uuid
+maturity_date
+
+Bonds
+owner_uuid
+issuance_uuid
+
+Crypto pubkey
+crypto_pubkey
+
+
+
+
+
+
 # Crypto Bonds
 
 This is an example Sawtooth application, built for blockchain presentations at
