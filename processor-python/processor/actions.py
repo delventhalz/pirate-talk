@@ -78,3 +78,12 @@ def accept_trade(context, initiator_pubkey, message_dict):
 
 def add_crypto(context, initiator_pubkey, message_dict):
     pass
+
+def add_clearer(context, initiator_pubkey, message_dict):
+    pass
+
+def add_bank(context, initiator_pubkey, message_dict):
+    pass
+
+def add_trader(context, initiator_pubkey, message_dict):
+    pass
