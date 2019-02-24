@@ -64,8 +64,17 @@ def issue_bond(context, initiator_pubkey, message_dict):
 
     context.set_state(new_state_dict)
 
-buy_bonds_otc
-initiate_trade
-cancel_trade
-accept_trade
-add_crypto
+def buy_bonds_otc(context, initiator_pubkey, message_dict):
+    pass
+
+def initiate_trade(context, initiator_pubkey, message_dict):
+    pass
+
+def cancel_trade(context, initiator_pubkey, message_dict):
+    pass
+
+def accept_trade(context, initiator_pubkey, message_dict):
+    pass
+
+def add_crypto(context, initiator_pubkey, message_dict):
+    pass
