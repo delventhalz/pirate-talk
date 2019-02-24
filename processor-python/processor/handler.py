@@ -2,17 +2,10 @@ from sawtooth_sdk.processor.handler import TransactionHandler
 from sawtooth_sdk.processor.exceptions import InvalidTransaction
 
 
-def piratify(msg):
-    return 'yar{} {}{}!'.format(
-        'r' * int(len(msg) / 3),
-        msg,
-        '!' * int(len(msg) / 5)
-    ).upper()
-
-class PirateHandler(TransactionHandler):
+class BondHandler(TransactionHandler):
     @property
     def family_name(self):
-        return 'pirate-talk'
+        return 'crypto-bonds'
 
     @property
     def family_versions(self):
@@ -20,7 +13,7 @@ class PirateHandler(TransactionHandler):
 
     @property
     def namespaces(self):
-        return ['aaaaaa']
+        return ['b04d']  # Thanks @Zac Delventhal
 
     def apply(self, txn, context):
         try:
@@ -28,9 +21,11 @@ class PirateHandler(TransactionHandler):
         except Exception as e:
             raise InvalidTransaction(e)
 
-        pirate_message = piratify(message)
-        uuid = txn.signature[-32:]
+        if method == 'issue_bond':
+            actions = issue_bonds(relevant_info)
+
+        method(context, initiator_pubkey, message_dict)
+
         address = 'aaaaaa' + ('a' * 32) + uuid
 
-        print(pirate_message)
         context.set_state({address: pirate_message.encode('utf-8')})

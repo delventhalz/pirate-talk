@@ -2,7 +2,7 @@ import sys
 import argparse
 
 from sawtooth_sdk.processor.core import TransactionProcessor
-from pirate_processor.handler import PirateHandler
+from processor.handler import PirateHandler
 
 
 def parse_args(args):
