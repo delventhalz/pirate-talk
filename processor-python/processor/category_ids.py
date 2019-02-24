@@ -5,7 +5,7 @@ CATEGORY_BOND_SELL_ORDERS = 1
 CATEGORY_CRYPTO_BUY_ORDERS = 2
 CATEGORY_CRYPTO_SELL_ORDERS = 3
 CATEGORY_CRYPTO_TYPES = 4
-CATEGORY_BOND_TYPES = 5
+CATEGORY_ISSUANCE = 5
 CATEGORY_OWNERS = 6
 CATEGORY_BONDS = 7
 CATEGORY_OWNER_BONDS = 8
@@ -23,7 +23,7 @@ def add_namespace(method):
 
 def add_category(method, category):
     def category_adder(*args, **kwargs):
-        return hex(CATEGORY_BOND_TYPES)[2:] + method(*args, **kwargs)
+        return hex(category)[2:] + method(*args, **kwargs)
     return category_adder
 
 def zero_pad(method):
@@ -40,8 +40,8 @@ def prefixify(method, category):
         return method(*args, **kwargs)
     return prefixer
 
-@prefixify(CATEGORY_BOND_TYPES)
-def get_bond_type_address(uuid):
+@prefixify(CATEGORY_ISSUANCE)
+def get_issuance_address(uuid):
     return uuid
 
 @prefixify(CATEGORY_BONDS)
