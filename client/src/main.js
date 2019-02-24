@@ -37,9 +37,7 @@ const MessageInput = {
           value: vnode.state.newText,
           oninput: m.withAttr('value', v => { vnode.state.newText = v })
         }),
-        m('button.btn.btn-primary.ml-2',
-          { onclick: getSubmitFn(vnode.state) },
-          'Submit'))
+        )
     ])
   }
 }
@@ -71,14 +69,24 @@ const App = {
 
   view (vnode) {
     return m('.container', [
-      m('h1.text-center.mb-5', 'Talk Like A Pirate'),
+      m('h1.text-center.mb-5', 'Crypto Bonds'),
       m('.row.mb-5',
         m('.col-lg',
           m('h5', 'Public Key'),
           vnode.state.keys.publicKey)),
       m('.row',
         m('.col-lg-4.mb-3',
-          m(MessageInput, vnode.state.keys)),
+          m('h2.text-left.mb-5', 'Name'),
+          m(MessageInput, vnode.state.keys),
+          m('h2.text-left.mb-5', 'Bank'),
+          m(MessageInput, vnode.state.keys),
+          m('h2.text-left.mb-5', 'Amount'),
+          m(MessageInput, vnode.state.keys),
+          m('h2.text-left.mb-5', 'Denomination'),
+          m(MessageInput, vnode.state.keys),
+          m('button.btn.btn-primary.ml-2',
+          { onclick: getSubmitFn(vnode.state) },
+          'Submit')),
         m('.col-lg-8',
           vnode.state.messages.length !== 0
             ? vnode.state.messages.map(attrs => m(Message, attrs))
