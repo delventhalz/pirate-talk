@@ -298,6 +298,32 @@ const get_one_clearer = () => {
   })
 }
 
+// Fetch all pirate messages from the Sawtooth REST API
+const bank_bonds = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d13'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const get_one_bank_bonds = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d13'+'00000000000000000000000000000000'+ uuid
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
 // Submit binary data to the Sawtooth REST API
 const submit = data => {
   return m.request({
