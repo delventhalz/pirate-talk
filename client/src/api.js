@@ -106,9 +106,10 @@ const cryptotype = () => {
 }
 
 // Fetch all pirate messages from the Sawtooth REST API
-const get_one_cryptotype() = () => {
+const get_one_cryptotype = () => {
   return m.request({
     method: 'GET',
+    data: uuid,
     url: '/api/state?address=b04d04'+ '00000000000000000000000000000000'+ uuid
   }).then(({ data }) => {
     return data.map(({ address, data }) => ({
