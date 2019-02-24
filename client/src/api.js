@@ -26,6 +26,150 @@ const fetch = () => {
   })
 }
 
+// buy/sell crypto/ bond orders
+// todo
+const buysellbond = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d03'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const owner = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d06'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const bondtype = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d06'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const bonds = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d07'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const cryptopubkey = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d12'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const cryptotype = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d04'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const get_one_cryptotype() = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d04'+ '00000000000000000000000000000000'+ uuid
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const orders = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d10'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const ownerbonds = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d08'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const ownercrypto = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d09'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
+// Fetch all pirate messages from the Sawtooth REST API
+const clearer = () => {
+  return m.request({
+    method: 'GET',
+    url: '/api/state?address=b04d11'
+  }).then(({ data }) => {
+    return data.map(({ address, data }) => ({
+      id: toUuid(address),
+      text: window.atob(data)
+    }))
+  })
+}
+
 // Submit binary data to the Sawtooth REST API
 const submit = data => {
   return m.request({
@@ -71,5 +215,16 @@ const subscribe = onReceive => {
 module.exports = {
   fetch,
   submit,
-  subscribe
+  subscribe,
+  owner,
+  bondtype,
+  bonds,
+  cryptopubkey,
+  cryptotype,
+  orders,
+  ownerbonds,
+  ownercrypto,
+  clearer,
+  buysellbond,
+  get_one_cryptotype
 }
