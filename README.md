@@ -1,10 +1,13 @@
 # Sawtooth PirateTalk
 
-This is an example Sawtooth application, built for blockchain presentations at
-Open Source North and MidwestJS 2018. It uses a simple fun app to showcase many
-parts of the Sawtooth ecosystem:
+An example [Hyperledger Sawtooth](https://github.com/hyperledger/sawtooth-core)
+application, built to be a companion to blockchain presentations given at
+Open Source North, MidwestJS, and ConFoo. This simple app nonetheless showcases
+a number of components commonly function in a full stack Sawtooth app:
+
  - Javascript client transaction submission
  - REST API state delta subscriptions
+ - A docker-compose based deployment of core validator components
  - Javascript, Python, and Rust transaction processors
  - Seth Solidity smart contracts (WIP)
  - Sabre WASM smart contracts (WIP)
@@ -102,12 +105,8 @@ exit
 
 ## Slides
 
-The slides for the June 2018 Sawtooth App Development presentation are
-available online in a variety of formats:
- - [Google Slides](https://docs.google.com/presentation/d/1cSSimL-evPxT-8DDxjvKwKFNbxgNklzQoxVhOLBWvRs/edit?usp=sharing)
- - [MS PowerPoint](presentation/blockchain_apps_08_2018.pptx)
- - [Open Doc](presentation/blockchain_apps_08_2018.odp)
- - [PDF](presentation/blockchain_apps_08_2018.pdf)
+The slides from the latest version of the talk are available on
+[Google Slides](https://docs.google.com/presentation/d/1Wq71_7Nw0W2CcXK_Nq4mruSwtEHLwU3i8XJ3x4ASzAA).
 
 ## License
 
