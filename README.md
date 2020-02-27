@@ -34,6 +34,10 @@ docker-compose up
 This will take a _long_ time to build and install the first time, 30 minutes or
 more. In the future it will be much faster, 30 seconds or less.
 
+Once running, you can navigate to [localhost:8080](http://localhost:8080) to
+use the client and submit transactions. Submitted transactions should then
+appear in your console as the transaction processors handle them.
+
 ### Docker Cheatsheet
 
 Here is a list of useful docker commands you might use when working with this
