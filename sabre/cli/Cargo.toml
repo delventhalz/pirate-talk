@@ -11,7 +11,7 @@ path = "src/main.rs"
 clap = "2"
 futures = "0.1"
 hyper = "0.11"
-protobuf = "2"
+protobuf = "3"
 rust-crypto = "0.2"
 sawtooth_sdk = { git = "https://github.com/hyperledger/sawtooth-core.git" }
 tokio-core = "0.1"
