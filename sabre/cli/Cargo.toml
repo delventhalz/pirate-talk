@@ -10,7 +10,7 @@ path = "src/main.rs"
 [dependencies]
 clap = "2"
 futures = "0.1"
-hyper = "0.11"
+hyper = "0.14"
 protobuf = "2"
 rust-crypto = "0.2"
 sawtooth_sdk = { git = "https://github.com/hyperledger/sawtooth-core.git" }
